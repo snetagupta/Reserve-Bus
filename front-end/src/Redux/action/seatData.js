@@ -5,4 +5,4 @@ export const setSeatData=(dispatch,data) =>{
         type:actionTypes.SET_SEATDATA,
         payload:data,
     });
-}
+};

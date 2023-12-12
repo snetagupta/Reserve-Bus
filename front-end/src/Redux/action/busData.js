@@ -6,3 +6,4 @@ export const setBusData = (dispatch,data) => {
         payload: data,
       });
     };
+    
