@@ -4,6 +4,7 @@ import Home from './Pages/Home';
 import BusPage from './Pages/BusPage';
 import SigninPage from './Pages/SigninPage';
 import SignupPage from './Pages/SignupPage';
+import UserDetails from './Pages/UserDetails';
 
 
  function App() {
@@ -14,6 +15,7 @@ import SignupPage from './Pages/SignupPage';
         <Route path='/allBuses' element={<BusPage />}/>
         <Route path='/signin' element={<SigninPage />}/>
         <Route path='/signup' element={<SignupPage />}/>
+        <Route path='/info' element={<UserDetails/>}/>
       </Routes>
     </div>
   )
