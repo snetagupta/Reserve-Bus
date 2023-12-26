@@ -5,6 +5,8 @@ import BusPage from './Pages/BusPage';
 import SigninPage from './Pages/SigninPage';
 import SignupPage from './Pages/SignupPage';
 import UserDetails from './Pages/UserDetails';
+import Success from './Components/Success';
+import Cancel from './Components/Cancel';
 
 
  function App() {
@@ -16,6 +18,8 @@ import UserDetails from './Pages/UserDetails';
         <Route path='/signin' element={<SigninPage />}/>
         <Route path='/signup' element={<SignupPage />}/>
         <Route path='/info' element={<UserDetails/>}/>
+        <Route path='/success' element={<Success/>}/>
+        <Route path='/cancel' element={<Cancel/>}/>
       </Routes>
     </div>
   )

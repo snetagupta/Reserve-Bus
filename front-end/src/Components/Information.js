@@ -4,14 +4,18 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
+import {loadStripe} from '@stripe/stripe-js';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Information = () => {
   const navigate = useNavigate();
   let formattedDate, totalPrice;
   let userDetails=useSelector((x)=>x.userDetails.INIT_STATE);
+  console.log(userDetails);
   let fromTo = useSelector((state) => state.fromTo.INIT_STATE);
+  console.log(fromTo );
   let seatData = useSelector((x) => x.seatData.INIT_STATE);
+  console.log(seatData);
 
   if (fromTo && seatData) {
     const date = new Date(fromTo.Date);
@@ -19,11 +23,58 @@ const Information = () => {
     totalPrice = Number(seatData.selectedBusCard.busFare) * Number(seatData.selectedSeat.length);
   }
 
-  async function handleFinalSubmit() {
-    toast.success('Booking Successfull', {position: "top-right",autoClose: 2000,hideProgressBar: false,closeOnClick: true,pauseOnHover: true,draggable: true,progress: undefined,theme: "light"});
-    await new Promise(resolve => setTimeout(resolve, 3000));
-    navigate('/receipt');
+  async function handleFinalSubmit(){
+  const stripe = await loadStripe(
+    "pk_test_51OOtzRSB3JGtnuUYU1cUgFau0jkk8MkOpp0bn4qs9leHsUAyrPIyZPlYTktPSrL4oCAc3bbh4gX5PumiJtslvAgm00dH0VQrne"
+  );
+
+  // const { name } = userDetails;
+  // const { From, To } = fromTo;
+  // const { busName, busFare }= seatData;
+  // const body = {
+  //   savedBooking:{
+  //     userDetails: { name },
+  //     fromTo: { From, To },
+  //     seatData:{ busName, busFare },
+  //   },
+  // };
+  const body = {
+    savedBooking:{
+      userDetails,
+      fromTo,
+      seatData,
+    },
   };
+
+  const header = {
+    "Content-Type": "application/json",
+  };
+
+  const response = await fetch(
+    "http://localhost:5001/tickets",
+    {
+      method: "POST",
+      headers: header,
+      body: JSON.stringify(body),
+    }
+  );
+
+  const session = await response.json();
+  console.log("36");
+  const result = stripe.redirectToCheckout({
+    sessionId: session.id,
+  });
+
+  console.log("41");
+
+  console.log("44");
+  if (result.error) {
+    console.log(result.error);
+  }
+
+  // Resolve the promise once the payment process is completed
+  return result;
+}
 
   return (
     <>
