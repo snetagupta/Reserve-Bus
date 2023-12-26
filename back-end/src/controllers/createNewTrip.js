@@ -6,6 +6,7 @@ const createNewTrip = async(req,res) =>{
 
     try {
        const data =new trip(req.body)
+    //    console.log(data);
        await data.save()
         res.send(data);
     } catch (error) {

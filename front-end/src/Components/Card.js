@@ -1,44 +1,42 @@
-
-    // // Check if props.data exists before attempting to destructure its properties
-    // if (!props.data) {
-    //   // Render a message if props.data is undefined
-    //   return (
-    //     <h1 className='flex justify-center py-4'>
-    //       No data Found!! <p className='text-blue-600'><Link to="/">Click here</Link></p>
-    //     </h1>
-    //   );
-    // }
-  
-  import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import { useSelector } from 'react-redux';
 
 function Card(props) {
-    let [hour,setHour]=useState("");
-    let [min,setMin]=useState("");
+    let [hour, setHour] = useState("");
+    let [min, setMin] = useState("");
     let fromTo = useSelector((state) => state.fromTo.INIT_STATE);
     const { EndTime, startTime } = props.data;
     let formattedDate;
+
     useEffect(() => {
         function timeDiff(EndTime, startTime) {
-          const endTimeParts = EndTime.split(":");
-          const startTimeParts = startTime.split(":");
-    
-          const end = parseInt(endTimeParts[0]) * 60 + parseInt(endTimeParts[1]);
-          const start = parseInt(startTimeParts[0]) * 60 + parseInt(startTimeParts[1]);
-    
-          const difference = end - start;
-          const resultHour = Math.floor(difference / 60);
-          const resultMin = difference % 60;
-          setHour(resultHour);setMin(resultMin);
+            if (EndTime && startTime) {
+                const endTimeParts = EndTime.split(":");
+                const startTimeParts = startTime.split(":");
+
+                const end = parseInt(endTimeParts[0]) * 60 + parseInt(endTimeParts[1]);
+                const start = parseInt(startTimeParts[0]) * 60 + parseInt(startTimeParts[1]);
+
+                const difference = end - start;
+                const resultHour = Math.floor(difference / 60);
+                const resultMin = difference % 60;
+                setHour(resultHour);
+                setMin(resultMin);
+            } else {
+                // Handle the case where EndTime or startTime is undefined
+                console.error("EndTime or startTime is undefined");
+            }
         }
-    
+
         timeDiff(EndTime, startTime);
-      },[EndTime, startTime]);
-    if(fromTo){
+    }, [EndTime, startTime]);
+
+    if (fromTo) {
         const date = new Date(fromTo.Date);
-        formattedDate = date.toLocaleDateString("en-US", {day: "numeric",month: "short"});
+        formattedDate = date.toLocaleDateString("en-US", { day: "numeric", month: "short" });
     }
+
   return (
     <div>
         {formattedDate?
